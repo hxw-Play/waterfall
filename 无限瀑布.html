@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+
+            width: 850px;
+            /* height: 1100px; */
+            border: 1px solid black;
+            margin: 20px auto;
+            overflow: hidden;
+
+        }
+
+        #box ul {
+            list-style: none;
+            float: left;
+            width: 210px;
+        }
+
+        #box li {
+            background-color: yellow;
+            font-size: 100px;
+            color: white;
+            text-align: center;
+            margin-bottom: 5px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <ul></ul>
+        <ul></ul>
+        <ul></ul>
+        <ul></ul>
+    </div>
+</body>
+<script>
+    var uls = document.querySelectorAll('ul');
+
+    function randomNumber(m, n) {
+        return Math.floor(Math.random() * (n - m + 1) + m);
+    }
+
+    function randomRgbColor() { //随机生成RGB颜色
+        var r = Math.floor(Math.random() * 256); //随机生成256以内r值
+        var g = Math.floor(Math.random() * 256); //随机生成256以内g值
+        var b = Math.floor(Math.random() * 256); //随机生成256以内b值
+        return `rgb(${r},${g},${b})`; //返回rgb(r,g,b)格式颜色
+    }
+    var i = 0;
+    var k = i;
+
+    function foo() {
+        for (i = k; i < k + 4; i++) {
+
+            var li = document.createElement('li');
+            li.style.backgroundColor = randomRgbColor();
+            li.style.height = randomNumber(120, 400) + 'px';
+            li.innerHTML = i + 1 + '';
+            var index = 0;
+            for (var j = 0; j < uls.length; j++) {
+                if (uls[j].offsetHeight < uls[index].offsetHeight) {
+                    index = j;
+                }
+            }
+            uls[index].appendChild(li);
+        }
+        k = i;
+        return uls[index].offsetHeight;
+
+    }
+    foo()
+    //没有鼠标滚轮事件,所以使用onmousewheel事件
+    window.onmousewheel  = function () {
+        var windowH = document.documentElement.clientHeight;
+        var scrollH  = document.documentElement.scrollTop || document.body.scrollHeight;
+        var documentH = document.documentElement.scrollHeight || document.body.scrollHeight;
+        if(windowH + scrollH>documentH - 200){
+            foo()
+        }   
+    }
+</script>
+
+</html>
